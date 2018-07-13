@@ -21,12 +21,13 @@ class System {
     this.mouse = {
       x: 0, y: 0,
       vx: 0, vy: 0,
-      time: performance.now()
+      time: performance.now(),
+      clickTime: performance.now()
     };
     this.canvas.addEventListener('click', this.click.bind(this));
     this.canvas.addEventListener('mousemove', this.mousemove.bind(this));
-    this.canvas.addEventListener('touchmove', this.mousemove.bind(this));
-    this.canvas.addEventListener('touchend', this.click.bind(this));
+    this.canvas.addEventListener('touchmove', e => this.mousemove(e.changedTouches[0]));
+    this.canvas.addEventListener('touchend', e => this.click(e.changedTouches[0]));
 
     //-- Keyup... --//
     document.addEventListener('keyup', this.keyup.bind(this));
@@ -142,6 +143,12 @@ class System {
   }
 
   click(e) {
+    // debugger;
+    if (performance.now() - this.mouse.clickTime < 50) // 2fast4me
+      return;
+
+    this.mouse.clickTime = performance.now();
+
     let v;
     if (performance.now() - this.mouse.time > 150) { // More than 150 ms have passed since the last mousemove
       v = { x: 0, y: 0 };
