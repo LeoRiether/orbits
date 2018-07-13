@@ -13,6 +13,7 @@ class System {
     this.c = this.canvas.getContext('2d');
     this.c.font = '12px "Source Code Pro", monospace';
     this.trail = true;
+    this.initialMass = 4;
 
     // Start with a single body in the middle
     this.resetBodies();
@@ -45,6 +46,7 @@ class System {
     //-- Dat.GUI --//
     this.gui = new dat.GUI();
     this.fps.gui = this.gui.add(this, 'FPS');
+    this.gui.add(this, 'initialMass', 2, 20);
     this.trailGui = this.gui.add(this, 'trail');
     this.static = false;
     this.staticGui = this.gui.add(this, 'static').onChange(this.toggleStatic.bind(this));
@@ -159,7 +161,7 @@ class System {
     this.bodies.push(new CBody(
       { x: e.clientX, y: e.clientY },
       v, 
-      4,
+      this.initialMass,
       `hsl(${Math.random()*360}, 80%, 75%)`
     ));
   }
