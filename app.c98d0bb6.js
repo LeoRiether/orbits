@@ -267,7 +267,7 @@ var System = function () {
 
       // Clear screen
       // this.c.fillStyle = this.trail ? '#0b1c3810' : '#0b1c38';
-      this.c.fillStyle = this.trail ? 'rgba(0,0,0,1)' : 'rgba(0,0,0,.1)';
+      this.c.fillStyle = this.trail ? 'rgba(0,0,0,.1)' : 'rgba(0,0,0,1)';
       this.c.fillRect(0, 0, this.width, this.height);
 
       // Show FPS (updated each second)
@@ -363,6 +363,7 @@ var System = function () {
       } else if (e.key === 's') {
         this.bodies[0].pos = { x: this.width / 2.0, y: this.height / 2.0 };
         this.bodies[0].vel = { x: 0, y: 0 };
+        this.bodies[0].a = { x: 0, y: 0 };
         this.bodies[0].static = !this.bodies[0].static;
       } else if (e.key === 't') {
         this.trail = !this.trail;
@@ -405,7 +406,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = '' || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + '23218' + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + '34907' + '/');
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);
 
