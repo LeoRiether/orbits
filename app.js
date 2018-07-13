@@ -25,6 +25,8 @@ class System {
     };
     this.canvas.addEventListener('click', this.click.bind(this));
     this.canvas.addEventListener('mousemove', this.mousemove.bind(this));
+    this.canvas.addEventListener('touchmove', this.mousemove.bind(this));
+    this.canvas.addEventListener('touchend', this.click.bind(this));
 
     //-- Keyup... --//
     document.addEventListener('keyup', this.keyup.bind(this));
