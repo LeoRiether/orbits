@@ -147,6 +147,7 @@ class System {
     } else if (e.key === 's') {
       this.bodies[0].pos = { x: this.width/2.0, y: this.height/2.0 };
       this.bodies[0].vel = { x: 0, y: 0 };
+      this.bodies[0].a = { x: 0, y: 0 };
       this.bodies[0].static = !this.bodies[0].static;
     } else if (e.key === 't') {
       this.trail = !this.trail; 
