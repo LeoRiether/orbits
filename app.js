@@ -58,7 +58,7 @@ class System {
 
     // Clear screen
     // this.c.fillStyle = this.trail ? '#0b1c3810' : '#0b1c38';
-    this.c.fillStyle = this.trail ? 'rgba(0,0,0,1)' : 'rgba(0,0,0,.1)';
+    this.c.fillStyle = this.trail ? 'rgba(0,0,0,.1)' : 'rgba(0,0,0,1)';
     this.c.fillRect(0, 0, this.width, this.height);
 
     // Show FPS (updated each second)
