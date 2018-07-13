@@ -1,4 +1,4 @@
 # Orbits!
 yup
 
-> build with ParcelJS
+> built with ParcelJS
