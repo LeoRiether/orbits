@@ -23,8 +23,8 @@ class System {
       vx: 0, vy: 0,
       time: performance.now()
     };
-    document.addEventListener('click', this.click.bind(this));
-    document.addEventListener('mousemove', this.mousemove.bind(this));
+    this.canvas.addEventListener('click', this.click.bind(this));
+    this.canvas.addEventListener('mousemove', this.mousemove.bind(this));
 
     //-- Keyup... --//
     document.addEventListener('keyup', this.keyup.bind(this));
@@ -38,8 +38,19 @@ class System {
     this.time = performance.now();
     this._loop = this.loop.bind(this);
     window.requestAnimationFrame(this._loop);
+
+    //-- Dat.GUI --//
+    this.gui = new dat.GUI();
+    this.fps.gui = this.gui.add(this, 'FPS');
+    this.trailGui = this.gui.add(this, 'trail');
+    this.static = false;
+    this.staticGui = this.gui.add(this, 'static').onChange(this.toggleStatic.bind(this));
+    this.gui.add(this, 'resetBodies');
   }
 
+  // Just for dat.GUI...
+  get FPS() { return this.fps.current; }
+  
   resetBodies() {
     this.bodies = [
       new CBody(
@@ -49,18 +60,20 @@ class System {
         'white'
       )
     ];
+    this.static = false;
+    if (this.staticGui) this.staticGui.updateDisplay();
   }
-
+  
   loop(time) {
     //-- Update timer stuff --//
     let dt = (time - this.time)/1000.0;  
     this.time = time;
-
+    
     // Clear screen
     // this.c.fillStyle = this.trail ? '#0b1c3810' : '#0b1c38';
     this.c.fillStyle = this.trail ? 'rgba(0,0,0,.1)' : 'rgba(0,0,0,1)';
     this.c.fillRect(0, 0, this.width, this.height);
-
+    
     // Show FPS (updated each second)
     this.fps.timer += dt;
     this.fps.counter++;
@@ -68,9 +81,10 @@ class System {
       this.fps.current = this.fps.counter;
       this.fps.counter = 0; 
       this.fps.timer = 0;
+      this.fps.gui.updateDisplay();
     }
-    this.c.fillStyle = 'white';
-    this.c.fillText(this.fps.current + ' FPS', 25, 25);
+    // this.c.fillStyle = 'white';
+    // this.c.fillText(this.fps.current + ' FPS', 25, 25);
 
     //-- Update & Draw all celestial bodies --//
     let blen = this.bodies.length;  // Slight optimizations! Hurray!
@@ -141,16 +155,23 @@ class System {
     ));
   }
 
+  toggleStatic(v) {
+    this.bodies[0].pos = { x: this.width/2.0, y: this.height/2.0 };
+    this.bodies[0].vel = { x: 0, y: 0 };
+    this.bodies[0].a = { x: 0, y: 0 };
+    this.bodies[0].static = v !== undefined ? v : !this.bodies[0].static;
+    this.static = this.bodies[0].static;
+  }
+
   keyup(e) {
     if (e.key === 'r') {
       this.resetBodies();
     } else if (e.key === 's') {
-      this.bodies[0].pos = { x: this.width/2.0, y: this.height/2.0 };
-      this.bodies[0].vel = { x: 0, y: 0 };
-      this.bodies[0].a = { x: 0, y: 0 };
-      this.bodies[0].static = !this.bodies[0].static;
+      this.toggleStatic();
+      this.staticGui.updateDisplay();
     } else if (e.key === 't') {
       this.trail = !this.trail; 
+      this.trailGui.updateDisplay();
     } else if (e.key === 'q') {
       this.quadratic = 1 - this.quadratic;
     }
