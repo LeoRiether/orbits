@@ -1,4 +1,2 @@
-# Orbits!
-yup
-
-> build with ParcelJS
+# This is actually a parcel /dist folder...
+gh-pages hacks amirite
